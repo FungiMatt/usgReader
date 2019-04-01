@@ -28,6 +28,7 @@ usgLogger.configure({
 const logger = usgLogger.getLogger("default");
 
 var intervalo=0;
+var jsonPost;
 
 function tudo(){
 	newFilename = 'monitoring_'+(format(new Date(Date.now()).toLocaleString(), 'isoDate'));
@@ -56,6 +57,16 @@ function tudo(){
 		logger.info(`Memória total = ${memTotal}GB`);
 		logger.info(`Memória em uso = ${memUsada}GB`);
 		logger.info(`Memória Livre = ${memLivre}GB`);
+
+		let dadosMem = {
+      memoria_total: memTotal,
+      memoria_uso: memUsada,
+      memoria_livre: memLivre,
+    };
+
+    let jsonMem = JSON.stringify(dadosMem, null, 2);
+		fs.writeFileSync('mem.json', jsonMem);
+		jsonPost = jsonMem;
 	});
 
 	si.fsSize(function(disco){
@@ -83,7 +94,27 @@ function tudo(){
         console.log(`Espaço disponível = ${espacoDisp}GB (${percDisp}%)`);
 				logger.info(`Espaço disponível = ${espacoDisp}GB$ (${percDisp}%)`);
       }
+
+			var jsonDisco;
+			var dadosDisco;
+
+			dadosDisco = {
+        disco_unidade: hdd,
+        disco_espaco_total: espacoTotal,
+        disco_espaco_usado: espacoUso,
+        disco_espaco_disponivel: espacoDisp,
+      };
+
+			if (i==0){
+				jsonDisco = JSON.stringify(dadosDisco, null, 2);
+			} else {
+				jsonDisco = `${jsonDisco},\n${JSON.stringify(dadosDisco, null, 2)}`;
+			}
     }
+
+		fs.writeFileSync('hdd.json', jsonDisco);
+		jsonPost = `${jsonPost},\n${jsonDisco}`;
+
   });
 
 	osUtils.cpuUsage(function(cpuPerc){
@@ -98,10 +129,51 @@ function tudo(){
 
 		console.log(`Uso de CPU (%): ${usoCPU}`);
 		logger.info(`Uso de CPU (%): ${usoCPU}`);
+
+		let dadosCPU = {
+			cpu_perc_uso_atual: usoCPU,
+		};
+
+		let jsonCPU = JSON.stringify(dadosCPU, null, 2);
+		fs.writeFileSync('cpu.json', jsonCPU);
+		jsonPost = `${jsonPost},\n${jsonCPU}`;
 	});
 
 	console.log("=".repeat(70));
 	logger.info("=".repeat(70));
+
+	var configDest = {
+		hostname: 'localhost',
+		port: 6660,
+		method: 'POST',
+		headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length': dataMem.length
+		}
+	};
+
+	var req = http.request(options, function (res) {
+			console.log('STATUS:', res.statusCode);
+			console.log('HEADERS:', JSON.stringify(res.headers));
+
+			res.setEncoding('utf8');
+
+			res.on('data', function (chunk) {
+					console.log('BODY:', chunk);
+			});
+
+			res.on('end', function () {
+					console.log('No more data in response.');
+			});
+	});
+
+	req.on('error', function (e) {
+			console.log('Problem with request:', e.message);
+	});
+
+	req.write(jsonPost);
+	req.end();
+
 };
 
 if(intervalo==0){
@@ -112,5 +184,5 @@ if(intervalo==0){
 }
 
 if (intervalo>0){
-	setInterval(tudo, 10000);
+	setInterval(tudo, 5000);
 };
