@@ -1986,6 +1986,7 @@
       "resolved": "https://registry.npmjs.org/progress/-/progress-2.0.3.tgz",
       "version": "2.0.3"
     },
+    "properties-reader": "0.0.16",
     "psl": {
       "integrity": "sha512-/6pt4+C+T+wZUieKR620OpzN/LlnNKuWjy1iFLQ/UG35JqHlR/89MP1d96dUfkf6Dne3TuLQzOYEYshJ+Hx8mw==",
       "resolved": "https://registry.npmjs.org/psl/-/psl-1.1.31.tgz",
@@ -2124,6 +2125,9 @@
       },
       "resolved": "https://registry.npmjs.org/request-progress/-/request-progress-3.0.0.tgz",
       "version": "3.0.0"
+    },
+    "resolutions": {
+      "nexe/fuse-box": "3.1.0"
     },
     "resolve": {
       "integrity": "sha512-3sUr9aq5OfSg2S9pNtPA9hL1FVEAjvfOC4leW0SNf/mpnaakz2a9femSd6LqAww2RaFctwyf1lCqnTHuF1rxDg==",
@@ -2789,9 +2793,6 @@
       "integrity": "sha1-pcbVMr5lbiPbgg77lDofBJmNY68=",
       "resolved": "https://registry.npmjs.org/xtend/-/xtend-4.0.1.tgz",
       "version": "4.0.1"
-    },
-    "resolutions": {
-      "nexe/fuse-box": "3.1.0"
     }
   },
   "devDependencies": {
