@@ -141,7 +141,7 @@ function tudo(){
 	console.log("=".repeat(70));
 	logger.info("=".repeat(70));
 
-	/*var configDest = {
+	var configDest = {
 		hostname: properties.get('host_api'),
 		//port: 3000,
 		path: '/monitorings',
@@ -184,7 +184,7 @@ function tudo(){
 		req.write(jsonPost);
 		logger.info(jsonPost);
 		req.end();
-	}*/
+	}
 };
 
 if(intervalo==0){
