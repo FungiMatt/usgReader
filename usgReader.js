@@ -5,6 +5,10 @@ const osUtils = require('os-utils');
 const si = require('systeminformation');
 var mkdirp = require('mkdirp');
 var http = require('http');
+var shell = require('shelljs');
+
+mount = shell.exec('mount | grep $(df --output=source . | tail -1)');
+mountSplit = mount.split(' ', 1);
 
 var PropertiesReader = require('properties-reader');
 var properties = PropertiesReader('conf.properties');
@@ -81,7 +85,7 @@ function tudo(){
       const espacoDisp = (((disco[i].size/bToGb).toFixed(0))-((disco[i].used/bToGb).toFixed(0)));
       const percDisp = (100-percUso);
 
-			if(`${hdd}\\ws\\install\\usgReader`==raiz||hdd=='C:'){
+			if(`${hdd}\\ws\\install\\usgReader`==raiz || hdd=='C:' || hdd==mountSplit){
 	      console.log(`Disco ${hdd}`);
 				logger.info(`Disco ${hdd}`);
 
@@ -137,7 +141,7 @@ function tudo(){
 	console.log("=".repeat(70));
 	logger.info("=".repeat(70));
 
-	var configDest = {
+	/*var configDest = {
 		hostname: properties.get('host_api'),
 		//port: 3000,
 		path: '/monitorings',
@@ -180,7 +184,7 @@ function tudo(){
 		req.write(jsonPost);
 		logger.info(jsonPost);
 		req.end();
-	}
+	}*/
 };
 
 if(intervalo==0){

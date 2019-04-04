@@ -2196,6 +2196,7 @@
       "resolved": "https://registry.npmjs.org/set-value/-/set-value-2.0.0.tgz",
       "version": "2.0.0"
     },
+    "shelljs": "^0.8.3",
     "signal-exit": {
       "integrity": "sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=",
       "resolved": "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.2.tgz",
